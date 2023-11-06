@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace _2labaFinal.Models.WaterModels
 {
-    internal class Bottle : WaterDecorator
+    public class Bottle : WaterDecorator
     {
         private readonly double _count;
 

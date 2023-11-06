@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace _2labaFinal.Models.WaterModels
 {
-    internal class WaterByVolume : WaterDecorator
+    public class WaterByVolume : WaterDecorator
     {
         private double _volume;
 

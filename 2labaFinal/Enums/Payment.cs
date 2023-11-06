@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace _2labaFinal.Enums
 {
-    internal enum Payment
+    public enum Payment
     {
         Card, Cash
     }

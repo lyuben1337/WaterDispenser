@@ -8,7 +8,7 @@ using System.Xml.XPath;
 
 namespace _2labaFinal.Models.PaymentStrategy
 {
-    internal class CashPaymentStrategy : IPaymentStrategy
+    public class CashPaymentStrategy : IPaymentStrategy
     {
         private double _cash;
 

@@ -10,26 +10,31 @@ using System.Threading.Tasks;
 
 namespace _2labaFinal.Models.Machine
 {
-    internal class WaterMachine
+    public class WaterMachine
     {
-        public string Address;
+        public string Address = "default";
         private IPaymentStrategy _paymentStrategy;
         public readonly CashPaymentStrategy CashPaymentStrategy = new CashPaymentStrategy();
         public readonly CardPaymentStrategy CardPaymentStrategy = new CardPaymentStrategy();
         private Water _selectedWater;
         private WaterVendingMachine _waterVendingMachine;
         public WaterTank WaterTank;
-        public readonly double _stillWaterPrice;
-        public readonly double _sodaWaterPrice;
-        private readonly double _waterTankMaxVolume;
-        public int BottleCount;
+        public readonly double _stillWaterPrice = 12;
+        public readonly double _sodaWaterPrice = 10;
+        private readonly double _waterTankMaxVolume = 1000;
+        public int BottleCount = 0;
         private const double BottleVolume = 2;
         private double _waterVolume;
         private int _bottleBuyedCount = 0;
         public double Income = 0;
-        public bool PayWithCard = true;
-        public bool SellBottles = true;
-        public bool SellSoda = true;
+        public bool PayWithCard = false;
+        public bool SellBottles = false;
+        public bool SellSoda = false;
+
+        public WaterMachine() {
+            WaterTank = new WaterTank(_waterTankMaxVolume);
+            _waterVendingMachine = new WaterVendingMachine(null, null);
+        }
 
         public WaterMachine(double stillWaterPrice, double sodaWaterPrice, double waterTankMaxVolume, int bottleCount, string address)
         {

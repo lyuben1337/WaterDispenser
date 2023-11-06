@@ -15,12 +15,24 @@ namespace _2labaFinal
     public partial class Form1 : Form
     {
         private int _formStage = 0;
+        public int FormId { get; set; }
+        public string AutomatAdress { get; set; }
         private WaterMachine _waterMachine;
 
-        public Form1()
+        public Form1(WaterMachine waterMachine, int formId)
         {
-            _waterMachine = new WaterMachine(10, 12, 1000, 300, "Parashutystiv St, 6, Kharkiv, Kharkivs'ka oblast, Ukraine, 61000");
+            _waterMachine = waterMachine;
+            AutomatAdress = _waterMachine.Address;
+            FormId = formId;
             InitializeComponent();
+            btnWaterTypeSoda.Enabled = _waterMachine.SellSoda;
+            btnWithoutBottle.Enabled = _waterMachine.SellBottles;
+            btnWithCard.Enabled = _waterMachine.PayWithCard;
+            
+            sodaToolStripMenuItem.Checked = _waterMachine.SellSoda;
+            canBuyBottlesToolStripMenuItem.Checked = _waterMachine.SellBottles;
+            payWithCardToolStripMenuItem.Checked = _waterMachine.PayWithCard;
+
             redrawWindow();
         }
         
@@ -146,11 +158,21 @@ namespace _2labaFinal
             {
                 if (_formStage == 2)
                 {
-                    _waterMachine.BuyWithBottles(int.Parse(textBoxCountOfBottles.Text));
+                    var count = int.Parse(textBoxCountOfBottles.Text);
+                    if (count <= 0)
+                    {
+                        throw new Exception("Bottle count must be more then 0");
+                    }
+                    _waterMachine.BuyWithBottles(count);
                 }
                 else
                 {
-                    _waterMachine.BuyWithVolume(int.Parse(textBoxCountOfLiters.Text));
+                    var volume = double.Parse(textBoxCountOfLiters.Text);
+                    if (volume <= 0)
+                    {
+                        throw new Exception("Water volume must be more then 0");
+                    }
+                    _waterMachine.BuyWithVolume(volume);
                 }
                 labelSum.Text = "Sum: " + _waterMachine.GetCost().ToString();
                 _formStage = 4;
@@ -183,7 +205,12 @@ namespace _2labaFinal
         {
             try
             {
-                _waterMachine.CashPaymentStrategy.PutCash(double.Parse(textBoxCashAmount.Text));
+                var cash = double.Parse(textBoxCashAmount.Text);
+                if (cash <= 0)
+                {
+                    throw new Exception("Given money must be more then 0");
+                }
+                _waterMachine.CashPaymentStrategy.PutCash(cash);
                 _waterMachine.BuyWater();
                 _formStage = 0;
                 MessageBox.Show("You have bought water succesfully!");
@@ -244,7 +271,7 @@ namespace _2labaFinal
             {
                 _waterMachine.SellSoda = true;
                 sodaToolStripMenuItem.Checked = true;
-                btnWaterTypeStill.Enabled = true;
+                btnWaterTypeSoda.Enabled = true;
             }
         }
 
@@ -256,11 +283,6 @@ namespace _2labaFinal
         private void getIncomeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show(_waterMachine.Income.ToString());
-        }
-
-        private void addWaterToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-          
         }
 
         private void addBottlesToolStripMenuItem_Click(object sender, EventArgs e)

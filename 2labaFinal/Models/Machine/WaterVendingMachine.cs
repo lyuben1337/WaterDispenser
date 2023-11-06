@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace _2labaFinal.Models.Machine
 {
-    internal class WaterVendingMachine
+    public class WaterVendingMachine
     {
         private IPaymentStrategy _paymentStrategy;
         private Water _water;

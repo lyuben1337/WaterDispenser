@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace _2labaFinal.Models.WaterModels
 {
-    internal abstract class WaterDecorator : Water
+    public abstract class WaterDecorator : Water
     {
         protected Water water;
 

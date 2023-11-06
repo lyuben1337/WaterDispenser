@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace _2labaFinal.Models.Machine
 {
-    internal class WaterTank
+    public class WaterTank
     {
         public double Volume { get; set; }
 

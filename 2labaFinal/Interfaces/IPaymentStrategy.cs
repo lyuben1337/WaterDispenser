@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace _2labaFinal.Interfaces
 {
-    internal interface IPaymentStrategy
+    public interface IPaymentStrategy
     {
         bool Pay(double amount);
     }

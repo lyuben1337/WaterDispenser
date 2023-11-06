@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace _2labaFinal.Models.PaymentStrategy
 {
-    internal class CardPaymentStrategy : IPaymentStrategy
+    public class CardPaymentStrategy : IPaymentStrategy
     {
         public bool Pay(double amount)
         {
