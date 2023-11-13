@@ -72,6 +72,7 @@
     <Compile Include="Models\Machine\WaterVendingMachine.cs" />
     <Compile Include="Models\PaymentStrategy\CardPaymentStrategy.cs" />
     <Compile Include="Models\PaymentStrategy\CashPaymentStrategy.cs" />
+    <Compile Include="Models\Company\WaterProvider.cs" />
     <Compile Include="Models\WaterModels\Bottle.cs" />
     <Compile Include="Models\WaterModels\SodaWater.cs" />
     <Compile Include="Models\WaterModels\StillWater.cs" />
