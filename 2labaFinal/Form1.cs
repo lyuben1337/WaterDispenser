@@ -1,4 +1,6 @@
 ﻿using _2labaFinal.Enums;
+using _2labaFinal.Models;
+using _2labaFinal.Models.Company;
 using _2labaFinal.Models.Machine;
 using System;
 using System.Collections.Generic;
@@ -15,15 +17,14 @@ namespace _2labaFinal
     public partial class Form1 : Form
     {
         private int _formStage = 0;
-        public int FormId { get; set; }
         public string AutomatAdress { get; set; }
         private WaterMachine _waterMachine;
+        private List<WaterProvider> _companies = CompanyRepository.Instance.WaterProviders;
 
-        public Form1(WaterMachine waterMachine, int formId)
+        public Form1(WaterMachine waterMachine)
         {
             _waterMachine = waterMachine;
             AutomatAdress = _waterMachine.Address;
-            FormId = formId;
             InitializeComponent();
             btnWaterTypeSoda.Enabled = _waterMachine.SellSoda;
             btnWithoutBottle.Enabled = _waterMachine.SellBottles;
@@ -325,8 +326,7 @@ namespace _2labaFinal
                 {
                     throw new Exception("Add value must be positive!");
                 }
-
-
+                _companies[_waterMachine.GetCompanyID()].TakeWater(addWater);
                 _waterMachine.BottleCount += addBottle;
                 _waterMachine.WaterTank.Volume += addWater;
                 redrawWindow();

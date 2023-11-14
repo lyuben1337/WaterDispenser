@@ -1,4 +1,5 @@
-﻿using _2labaFinal.Models.Machine;
+﻿using _2labaFinal.Models.Company;
+using _2labaFinal.Models.Machine;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
@@ -11,12 +12,25 @@ namespace _2labaFinal.Models
     public class WaterProvider
     {
         public string Name { get; set; } = "default company";
-        private HashSet<WaterMachine> _machines = new HashSet<WaterMachine>();
-        public double TotalIncome { get; set; } = 0;
-        private LinkedList<string> _storage = new LinkedList<string>();
+        private List<WaterMachine> _machines = new List<WaterMachine>();
+        private HashSet<string> _machinesAddreses = new HashSet<string>();
+        private LinkedList<Log> _storage = new LinkedList<Log>();
         private List<WaterTank> _tanks = new List<WaterTank>();
         public string Adress { get; set; } = "default address";
         public string ID { get; set; } = "default code"; // EDRPOU code 
+        public double MaxTankVolume { get; set; } = 0;
+
+        public List<WaterMachine> Machines 
+        { 
+            get { return _machines; }
+            set {  _machines = value; }
+        }
+
+        public List<WaterTank> Tanks
+        {
+            get { return _tanks; }
+            set { _tanks = value; }
+        }
 
         public WaterProvider(string name, string adress, string id, List<WaterTank> waterTanks)
         {
@@ -24,29 +38,74 @@ namespace _2labaFinal.Models
             Adress = adress;
             ID = id; 
             _tanks = waterTanks;
+            MaxTankVolume = _tanks[0].Volume;
         }
 
-        void AddMachine(WaterMachine machine)
+        public void AddMachine(WaterMachine machine)
         {
             _machines.Add(machine);
+            _machinesAddreses.Add(machine.Address);
         }
 
-        void AddLog(string log)
+        public void AddLog(Log log)
         {
             _storage.AddLast(log);
         }
 
-        void AddWaterTank(WaterTank waterTank)
+        public void AddWater(double volume, int tankNubmer)
         {
-            _tanks.Add(waterTank);
+            if (tankNubmer < 0 || tankNubmer >= _tanks.Count)
+                throw new Exception($"Tank with number {tankNubmer} not found!");
+
+            _tanks[tankNubmer].Volume = Math.Min(MaxTankVolume, _tanks[tankNubmer].Volume + volume);
         }
 
-        public HashSet<WaterMachine> GetMachines()
+        public void TakeWater(double volume)
+        {
+            if (!isEnoughWaterInTanks(volume))
+                throw new Exception("Not enough water in tanks!");
+
+            double remainingVolume = volume;
+
+            foreach (WaterTank tank in _tanks)
+            {
+                if (tank.Volume >= remainingVolume)
+                {
+                    tank.TakeWater(remainingVolume);
+                    remainingVolume = 0;
+                    break;
+                }
+                else
+                {
+                    double takenFromTank = tank.Volume;
+                    tank.TakeWater(takenFromTank);
+                    remainingVolume -= takenFromTank;
+                }
+            }
+
+        }
+
+        public double GetIncome()
+        {
+            return _machines.Sum(m => m.Income);
+        }
+
+        public void RemoveMachine(int index)
+        {
+            _machines.RemoveAt(index);
+        }
+
+        private bool isEnoughWaterInTanks(double volume)
+        {
+            return volume <= _tanks.Sum(el => el.Volume);
+        }
+
+        public List<WaterMachine> GetMachines()
         {
             return _machines;
         }
 
-        public LinkedList<string> GetStorage()
+        public LinkedList<Log> GetStorage()
         {
             return _storage;
         }
@@ -54,6 +113,11 @@ namespace _2labaFinal.Models
         public List<WaterTank> GetTanks()
         {
             return _tanks;
+        }
+
+        public HashSet<string> GetNamesOfMachines()
+        {
+            return _machinesAddreses;
         }
     }
 }

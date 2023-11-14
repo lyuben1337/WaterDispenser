@@ -1,5 +1,6 @@
 ﻿using _2labaFinal.Enums;
 using _2labaFinal.Interfaces;
+using _2labaFinal.Models.Company;
 using _2labaFinal.Models.PaymentStrategy;
 using _2labaFinal.Models.WaterModels;
 using System;
@@ -12,31 +13,35 @@ namespace _2labaFinal.Models.Machine
 {
     public class WaterMachine
     {
-        public string Address = "default";
+        public string Address { get; set; } = "default";
         private IPaymentStrategy _paymentStrategy;
         public readonly CashPaymentStrategy CashPaymentStrategy = new CashPaymentStrategy();
         public readonly CardPaymentStrategy CardPaymentStrategy = new CardPaymentStrategy();
         private Water _selectedWater;
         private WaterVendingMachine _waterVendingMachine;
-        public WaterTank WaterTank;
-        public readonly double _stillWaterPrice = 12;
-        public readonly double _sodaWaterPrice = 10;
-        private readonly double _waterTankMaxVolume = 1000;
-        public int BottleCount = 0;
+        public WaterTank WaterTank { get; set; }
+        public double _stillWaterPrice { get; set; } = 12;
+        public double _sodaWaterPrice { get; set; } = 10;
+        private double _waterTankMaxVolume = 1000;
+        public int BottleCount { get; set; } = 0;
         private const double BottleVolume = 2;
         private double _waterVolume;
         private int _bottleBuyedCount = 0;
-        public double Income = 0;
-        public bool PayWithCard = false;
-        public bool SellBottles = false;
-        public bool SellSoda = false;
+        public double Income { get; set; } = 0;
+        public bool PayWithCard { get; set; } = false;
+        public bool SellBottles { get; set; } = false;
+        public bool SellSoda { get; set; } = false;
+        private int _companyId = 0;
+        private Log _currentLog = new Log();
+
+        public int CompanyID { get { return _companyId; } set { _companyId = value; } }
 
         public WaterMachine() {
             WaterTank = new WaterTank(_waterTankMaxVolume);
             _waterVendingMachine = new WaterVendingMachine(null, null);
         }
 
-        public WaterMachine(double stillWaterPrice, double sodaWaterPrice, double waterTankMaxVolume, int bottleCount, string address)
+        public WaterMachine(double stillWaterPrice, double sodaWaterPrice, double waterTankMaxVolume, int bottleCount, string address, int companyId)
         {
             _stillWaterPrice = stillWaterPrice;
             _sodaWaterPrice = sodaWaterPrice;
@@ -45,7 +50,10 @@ namespace _2labaFinal.Models.Machine
             _waterVendingMachine = new WaterVendingMachine(null, null);
             WaterTank = new WaterTank(waterTankMaxVolume);
             Address = address;
+            _companyId = companyId;
         }
+
+        public int GetCompanyID() { return _companyId; }
 
         public bool SelectPaymentStrategy(Payment payment)
         {
@@ -66,6 +74,7 @@ namespace _2labaFinal.Models.Machine
             }
 
             _waterVendingMachine.SetPaymentStrategy(_paymentStrategy);
+            _currentLog.PaymentType = payment;
             return true;
         }
 
@@ -87,6 +96,7 @@ namespace _2labaFinal.Models.Machine
                     return false;
             }
 
+            _currentLog.WaterType = type;
             return true;
         }
 
@@ -127,9 +137,22 @@ namespace _2labaFinal.Models.Machine
             {
                 BottleCount -= _bottleBuyedCount;
                 WaterTank.TakeWater(_waterVolume);
+                if(_bottleBuyedCount > 0)
+                {
+                    _currentLog.Volume = _bottleBuyedCount * BottleVolume;
+                } else
+                {
+                    _currentLog.Volume = _waterVolume;
+                }
                 _bottleBuyedCount = 0;
                 _waterVolume = 0;
                 Income += GetCost();
+                _currentLog.PurchaseDate = DateTime.Now;
+                _currentLog.AutomatId = $"ID{_companyId.ToString()}_{Address}"; 
+                _currentLog.Income = GetCost();
+                _currentLog.Status = "SUCCESS";
+                CompanyRepository.Instance.WaterProviders[_companyId].AddLog(_currentLog);
+                _currentLog = new Log();
                 return true;
             };
             _bottleBuyedCount = 0;

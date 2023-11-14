@@ -1,4 +1,6 @@
-﻿using _2labaFinal.Models.Machine;
+﻿using _2labaFinal.Models;
+using _2labaFinal.Models.Company;
+using _2labaFinal.Models.Machine;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,11 +15,15 @@ namespace _2labaFinal
 {
     public partial class AddAutomat : Form
     {
+        private int _companyID = 0;
+        private List<WaterProvider> _companies = CompanyRepository.Instance.WaterProviders;
         public WaterMachine CreatedMachine { get; set; }  = new WaterMachine();
 
-        public AddAutomat()
+        public AddAutomat(int companyID)
         {
+
             InitializeComponent();
+            _companyID = companyID;
         }
 
         private void btnCreateAutomat_Click(object sender, EventArgs e)
@@ -50,7 +56,8 @@ namespace _2labaFinal
                 {
                     throw new Exception("Adress must be inputed");
                 }
-                CreatedMachine = new WaterMachine(stillWaterPrice, stillWaterPrice, tankVolume, bottlesCount, address);
+                _companies[_companyID].TakeWater(tankVolume);
+                CreatedMachine = new WaterMachine(stillWaterPrice, sodaWaterPrice, tankVolume, bottlesCount, address, _companyID);
                 CreatedMachine.SellSoda = textBoxSodaWater.Enabled;
                 CreatedMachine.SellBottles = textBoxBottleCount.Enabled;
                 CreatedMachine.PayWithCard = label5.ForeColor.Equals(Color.DeepSkyBlue);

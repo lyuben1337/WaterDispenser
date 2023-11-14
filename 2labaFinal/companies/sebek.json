@@ -1,0 +1,35 @@
+{
+    "Name": "Sebek",
+    "Adress": "zxcqwe",
+    "ID": "zxc123qwe",
+    "MaxTankVolume": 500,
+    "Machines": [
+        {
+            "Address": "qwezxc123",
+            "WaterTank": {
+                "Volume": 1066
+            },
+            "_stillWaterPrice": 11,
+            "_sodaWaterPrice": 12,
+            "BottleCount": 17,
+            "Income": 541.5,
+            "PayWithCard": true,
+            "SellBottles": true,
+            "SellSoda": true
+        }
+    ],
+    "Tanks": [
+        {
+            "Volume": 0
+        },
+        {
+            "Volume": 0
+        },
+        {
+            "Volume": 389
+        },
+        {
+            "Volume": 500
+        }
+    ]
+}
