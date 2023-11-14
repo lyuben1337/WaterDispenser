@@ -109,7 +109,7 @@ namespace _2labaFinal
                 {
                     CompanyFileManager.SaveCompany(_company, saveFileDialog.FileName);
 
-                    MessageBox.Show("Logs saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Company saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }

@@ -120,7 +120,7 @@ namespace _2labaFinal
                     listBoxCompanies.Items.Add(company.Name);
                     company.Machines.ForEach(m => m.CompanyID = companies.Count);
                     companies.Add(company);
-                    MessageBox.Show("Logs saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Company added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
