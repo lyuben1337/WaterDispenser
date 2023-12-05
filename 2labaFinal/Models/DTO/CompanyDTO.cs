@@ -1,12 +1,6 @@
-﻿using _2labaFinal.Models.DTO;
-using _2labaFinal.Models.Machine;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace _2labaFinal
+namespace Models
 {
     public class CompanyDTO
     {

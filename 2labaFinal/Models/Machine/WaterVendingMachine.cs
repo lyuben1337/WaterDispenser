@@ -1,12 +1,4 @@
-﻿using _2labaFinal.Interfaces;
-using _2labaFinal.Models.WaterModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace _2labaFinal.Models.Machine
+﻿namespace Models
 {
     public class WaterVendingMachine
     {

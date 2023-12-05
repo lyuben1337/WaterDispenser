@@ -1,0 +1,38 @@
+[
+    {
+        "AutomatId": "ID0_harkiv",
+        "PurchaseDate": "2023-12-05T08:43:25.6861472+01:00",
+        "WaterType": 0,
+        "PaymentType": 1,
+        "Volume": 20,
+        "Income": 2012.5,
+        "Status": "SUCCESS"
+    },
+    {
+        "AutomatId": "ID0_donbas",
+        "PurchaseDate": "2023-12-05T08:44:07.2030272+01:00",
+        "WaterType": 0,
+        "PaymentType": 0,
+        "Volume": 99,
+        "Income": 990,
+        "Status": "SUCCESS"
+    },
+    {
+        "AutomatId": null,
+        "PurchaseDate": "2023-12-05T08:44:20.4656706+01:00",
+        "WaterType": 0,
+        "PaymentType": 0,
+        "Volume": 0,
+        "Income": 0,
+        "Status": "WATER DEPLETED"
+    },
+    {
+        "AutomatId": "ID0_donbas",
+        "PurchaseDate": "2023-12-05T08:44:20.4656706+01:00",
+        "WaterType": 0,
+        "PaymentType": 0,
+        "Volume": 1,
+        "Income": 12,
+        "Status": "SUCCESS"
+    }
+]

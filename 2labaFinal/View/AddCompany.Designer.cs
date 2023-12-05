@@ -1,4 +1,4 @@
-﻿namespace _2labaFinal
+﻿namespace View
 {
     partial class AddCompany
     {

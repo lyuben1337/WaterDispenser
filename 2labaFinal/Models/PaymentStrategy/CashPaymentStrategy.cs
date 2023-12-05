@@ -1,12 +1,6 @@
-﻿using _2labaFinal.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.XPath;
+﻿using System;
 
-namespace _2labaFinal.Models.PaymentStrategy
+namespace Models
 {
     public class CashPaymentStrategy : IPaymentStrategy
     {

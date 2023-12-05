@@ -1,19 +1,8 @@
-﻿using _2labaFinal.Models;
-using _2labaFinal.Models.Company;
-using _2labaFinal.Models.DTO;
-using _2labaFinal.Models.Machine;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
-namespace _2labaFinal.Utils
+namespace Models
 {
     public static class CompanyFileManager
     {

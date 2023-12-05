@@ -1,9 +1,8 @@
-﻿using _2labaFinal.Models.Company;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 
-namespace _2labaFinal.Utils
+namespace Models
 {
     public static class LogFileManager
     {

@@ -74,39 +74,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddAutomat.cs">
+    <Compile Include="View\AddAutomat.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddAutomat.Designer.cs">
+    <Compile Include="View\AddAutomat.Designer.cs">
       <DependentUpon>AddAutomat.cs</DependentUpon>
     </Compile>
-    <Compile Include="AddCompany.cs">
+    <Compile Include="View\AddCompany.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddCompany.Designer.cs">
+    <Compile Include="View\AddCompany.Designer.cs">
       <DependentUpon>AddCompany.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\DTO\WaterMachineDTO.cs" />
     <Compile Include="Models\DTO\CompanyDTO.cs" />
-    <Compile Include="Company.cs">
+    <Compile Include="View\Company.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Company.Designer.cs">
+    <Compile Include="View\Company.Designer.cs">
       <DependentUpon>Company.cs</DependentUpon>
     </Compile>
-    <Compile Include="Enums\Payment.cs" />
-    <Compile Include="Enums\WaterType.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="Models\Enums\Payment.cs" />
+    <Compile Include="Models\Enums\WaterType.cs" />
+    <Compile Include="View\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
+    <Compile Include="View\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\IPaymentStrategy.cs" />
-    <Compile Include="Menu.cs">
+    <Compile Include="Models\Interfaces\IPaymentStrategy.cs" />
+    <Compile Include="View\Menu.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Menu.Designer.cs">
+    <Compile Include="View\Menu.Designer.cs">
       <DependentUpon>Menu.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Company\CompanyRepository.cs" />
@@ -125,21 +125,21 @@
     <Compile Include="Models\WaterModels\WaterDecorator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\CompanyFileManager.cs" />
-    <Compile Include="Utils\LogFileManager.cs" />
-    <EmbeddedResource Include="AddAutomat.resx">
+    <Compile Include="Models\Utils\CompanyFileManager.cs" />
+    <Compile Include="Models\Utils\LogFileManager.cs" />
+    <EmbeddedResource Include="View\AddAutomat.resx">
       <DependentUpon>AddAutomat.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AddCompany.resx">
+    <EmbeddedResource Include="View\AddCompany.resx">
       <DependentUpon>AddCompany.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Company.resx">
+    <EmbeddedResource Include="View\Company.resx">
       <DependentUpon>Company.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
+    <EmbeddedResource Include="View\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Menu.resx">
+    <EmbeddedResource Include="View\Menu.resx">
       <DependentUpon>Menu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

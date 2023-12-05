@@ -1,15 +1,6 @@
-﻿using _2labaFinal.Enums;
-using _2labaFinal.Interfaces;
-using _2labaFinal.Models.Company;
-using _2labaFinal.Models.PaymentStrategy;
-using _2labaFinal.Models.WaterModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
-namespace _2labaFinal.Models.Machine
+namespace Models
 {
     public class WaterMachine
     {
@@ -17,6 +8,7 @@ namespace _2labaFinal.Models.Machine
         private IPaymentStrategy _paymentStrategy;
         public readonly CashPaymentStrategy CashPaymentStrategy = new CashPaymentStrategy();
         public readonly CardPaymentStrategy CardPaymentStrategy = new CardPaymentStrategy();
+        private Payment selectedPaymentType = Payment.Card;
         private Water _selectedWater;
         private WaterVendingMachine _waterVendingMachine;
         public WaterTank WaterTank { get; set; }
@@ -32,7 +24,11 @@ namespace _2labaFinal.Models.Machine
         public bool SellBottles { get; set; } = false;
         public bool SellSoda { get; set; } = false;
         private int _companyId = 0;
-        private Log _currentLog = new Log();
+
+        public delegate void OrderPlacedEventHandler(object sender, OrderPlacedEventArgs e);
+        public event OrderPlacedEventHandler OrderPlaced;
+        public delegate void WaterDepletedEventHandler(object sender, WaterDepletedEventArgs e);
+        public event WaterDepletedEventHandler WaterDepleted;
 
         public int CompanyID { get { return _companyId; } set { _companyId = value; } }
 
@@ -65,16 +61,18 @@ namespace _2labaFinal.Models.Machine
                         throw new InvalidOperationException("Card payments unfortunatly is not posibble now!");
                     }
                     _paymentStrategy = CardPaymentStrategy;
+                    selectedPaymentType = Payment.Card;
                     break;
                 case Payment.Cash:
                     _paymentStrategy = CashPaymentStrategy;
+                    selectedPaymentType = Payment.Cash;
                     break;
                 default:
                     return false;
             }
 
             _waterVendingMachine.SetPaymentStrategy(_paymentStrategy);
-            _currentLog.PaymentType = payment;
+
             return true;
         }
 
@@ -96,7 +94,6 @@ namespace _2labaFinal.Models.Machine
                     return false;
             }
 
-            _currentLog.WaterType = type;
             return true;
         }
 
@@ -135,24 +132,34 @@ namespace _2labaFinal.Models.Machine
         {
             if (_waterVendingMachine.BuyWater())
             {
+                var eventArgs = new OrderPlacedEventArgs();
                 BottleCount -= _bottleBuyedCount;
                 WaterTank.TakeWater(_waterVolume);
+                if (WaterTank.Volume == 0)
+                {
+
+                    WaterDepleted?.Invoke(this, new WaterDepletedEventArgs
+                    {
+                        WaterMachine = this,
+                        AutomatId = $"ID{_companyId.ToString()}_{Address}",
+                    }) ;
+                }
                 if(_bottleBuyedCount > 0)
                 {
-                    _currentLog.Volume = _bottleBuyedCount * BottleVolume;
+                    eventArgs.OrderedVolume = _bottleBuyedCount * BottleVolume;
                 } else
                 {
-                    _currentLog.Volume = _waterVolume;
+                    eventArgs.OrderedVolume = _waterVolume;
                 }
+                Income += GetCost();
+                eventArgs.PurchaseDate = DateTime.Now;
+                eventArgs.AutomatId = $"ID{_companyId.ToString()}_{Address}";
+                eventArgs.Income = GetCost();
+                eventArgs.Status = "SUCCESS";
+                eventArgs.PaymentType = selectedPaymentType;
+                OrderPlaced?.Invoke(this, eventArgs);
                 _bottleBuyedCount = 0;
                 _waterVolume = 0;
-                Income += GetCost();
-                _currentLog.PurchaseDate = DateTime.Now;
-                _currentLog.AutomatId = $"ID{_companyId.ToString()}_{Address}"; 
-                _currentLog.Income = GetCost();
-                _currentLog.Status = "SUCCESS";
-                CompanyRepository.Instance.WaterProviders[_companyId].AddLog(_currentLog);
-                _currentLog = new Log();
                 return true;
             };
             _bottleBuyedCount = 0;
@@ -164,5 +171,24 @@ namespace _2labaFinal.Models.Machine
         {
             return _waterVendingMachine.GetCost();
         }
+    }
+
+    public class OrderPlacedEventArgs : EventArgs
+    {
+        public double OrderedVolume { get; set; }
+        public Payment PaymentType { get; set; }
+        public double Income { get; set; }
+        public string AutomatId { get; set; }
+        public string Status { get; set; }
+        public DateTime PurchaseDate { get; set; }
+        public WaterType WaterType { get; set; }
+
+    }
+
+    public class WaterDepletedEventArgs : EventArgs
+    {
+        public WaterMachine WaterMachine { get; set; }
+        public string AutomatId { get; set; }
+
     }
 }

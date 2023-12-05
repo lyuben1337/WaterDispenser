@@ -1,13 +1,9 @@
-﻿using _2labaFinal.Models.Company;
-using _2labaFinal.Models.Machine;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 
-namespace _2labaFinal.Models
+namespace Models
 {
     public class WaterProvider
     {
@@ -19,6 +15,7 @@ namespace _2labaFinal.Models
         public string Adress { get; set; } = "default address";
         public string ID { get; set; } = "default code"; // EDRPOU code 
         public double MaxTankVolume { get; set; } = 0;
+
 
         public List<WaterMachine> Machines 
         { 
@@ -43,6 +40,8 @@ namespace _2labaFinal.Models
 
         public void AddMachine(WaterMachine machine)
         {
+            machine.OrderPlaced += OnOrderPlaced;
+            machine.WaterDepleted += OnWaterDepleted;
             _machines.Add(machine);
             _machinesAddreses.Add(machine.Address);
         }
@@ -118,6 +117,45 @@ namespace _2labaFinal.Models
         public HashSet<string> GetNamesOfMachines()
         {
             return _machinesAddreses;
+        }
+
+        private void OnOrderPlaced(object sender, OrderPlacedEventArgs e)
+        {
+            Log log = new Log
+            {
+                Volume = e.OrderedVolume,
+                PaymentType = e.PaymentType,
+                Income = e.Income,
+                AutomatId = e.AutomatId,
+                Status = e.Status,
+                PurchaseDate = e.PurchaseDate,
+                WaterType = e.WaterType
+            };
+            AddLog(log);
+        }
+
+        private void OnWaterDepleted(object sender, WaterDepletedEventArgs e)
+        {
+            Log log = new Log
+            {
+                Status = "WATER DEPLETED",
+                PurchaseDate = DateTime.Now,
+                AutomatId = e.AutomatId
+            };
+            AddLog(log);
+            try
+            {
+                sendCourier(e.WaterMachine, 100);
+            } catch (Exception ex) {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void sendCourier(WaterMachine waterMachine, double volume)
+        {
+            this.TakeWater(volume);
+            waterMachine.WaterTank.PutWater(volume);
+            MessageBox.Show("Courier added water!");
         }
     }
 }

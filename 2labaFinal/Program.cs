@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace _2labaFinal
@@ -16,7 +13,7 @@ namespace _2labaFinal
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Menu());
+            Application.Run(new View.Menu());
         }
     }
 }
