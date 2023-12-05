@@ -31,6 +31,10 @@ namespace _2labaFinal
             try
             {
                 var adress = textBoxAdress.Text;
+                if (String.IsNullOrEmpty(adress))
+                {
+                    throw new Exception("Adress must be not empty!");
+                }
                 var stillWaterPrice = double.Parse(textBoxStillWater.Text);
                 if (stillWaterPrice < 0)
                 {
